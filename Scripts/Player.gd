@@ -1,30 +1,67 @@
 extends KinematicBody
 
-export var gravity_force = 10
-export var speed = 4
-export var jump_speed = 6
+export var speed = 10.0
+export var h_acceleration = 3.0
+export var gravity = 1.0
 
-var velocity = Vector3()
+var full_contact = false
+var direction = Vector3()
+var h_velocity = Vector3()
+var movement = Vector3()
+var gravity_vector = Vector3()
 
-var gravity = Vector3.DOWN * gravity_force
 
-func _physics_process(delta):
-	velocity += gravity * delta
-	get_input()
-	velocity = move_and_slide(velocity, Vector3.UP)
-	
-	
-func get_input():
-	velocity.x = 0
-	velocity.z = 0
-	
-	if Input.is_action_pressed("move_forward"):
-		velocity.z += speed
+export var mouse_sensitivity : float = 0.3
+onready var head = $Head
+onready var ground_check = $GroundCheck
+
+func _ready():
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+func _input(event):
+	if event.is_action_pressed("ui_cancel"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	if event.is_action_pressed("click"):
+		if Input.get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	if event is InputEventMouseMotion :
+		rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
+		head.rotate_x(deg2rad(-event.relative.y * mouse_sensitivity))
+		head.rotation.x = clamp(head.rotation.x, deg2rad(-89), deg2rad(89))
 		
-	if Input.is_action_pressed("move_back"):
-		velocity.z -= speed
-	if Input.is_action_pressed("strafe_left"):
-		velocity.x += speed
-	if Input.is_action_pressed("strafe_right"):
-		velocity.x -= speed
+func _physics_process(delta):
+	
 
+		
+	direction = Vector3()
+	
+	if ground_check.is_colliding():
+		full_contact = true
+	else:
+		full_contact = false
+	
+	if not is_on_floor() :
+		gravity_vector += Vector3.DOWN * gravity * delta
+	elif is_on_floor() and full_contact:
+		gravity_vector = -get_floor_normal() * gravity
+	else:
+		gravity_vector = -get_floor_normal()
+	
+	
+	if Input.is_action_pressed("move_forward") :
+		direction -= transform.basis.z
+	elif Input.is_action_pressed("move_back") :
+		direction += transform.basis.z
+	
+	if Input.is_action_pressed("strafe_left") :
+		direction -= transform.basis.x
+	elif Input.is_action_pressed("strafe_right") :
+		direction += transform.basis.x
+		
+	direction = direction.normalized()
+	h_velocity = h_velocity.linear_interpolate(direction * speed, h_acceleration * delta)
+	movement.z = h_velocity.z + gravity_vector.z
+	movement.x = h_velocity.x + gravity_vector.x
+	movement.y = gravity_vector.y
+	
+	move_and_slide(movement, Vector3.UP)

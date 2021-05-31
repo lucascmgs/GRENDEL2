@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/TestPannel.glb-6638e85a5a2957d08006cc73feeb726a.scn"
+path="res://.import/TestLevel2.0.gltf-183595e617fa045eb8695d83591fcbe3.scn"
 
 [deps]
 
-source_file="res://Models/Kenney/TestPannel.glb"
-dest_files=[ "res://.import/TestPannel.glb-6638e85a5a2957d08006cc73feeb726a.scn" ]
+source_file="res://Models/TestLevel2.0.gltf"
+dest_files=[ "res://.import/TestLevel2.0.gltf-183595e617fa045eb8695d83591fcbe3.scn" ]
 
 [params]
 
