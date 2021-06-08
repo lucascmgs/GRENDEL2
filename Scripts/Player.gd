@@ -50,11 +50,13 @@ func _physics_process(delta):
 	
 	if Input.is_action_pressed("move_forward") :
 		direction -= transform.basis.z
+		
 	elif Input.is_action_pressed("move_back") :
 		direction += transform.basis.z
-	
+		
 	if Input.is_action_pressed("strafe_left") :
 		direction -= transform.basis.x
+		
 	elif Input.is_action_pressed("strafe_right") :
 		direction += transform.basis.x
 		
