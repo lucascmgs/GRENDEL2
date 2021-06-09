@@ -9,11 +9,12 @@ var direction = Vector3()
 var h_velocity = Vector3()
 var movement = Vector3()
 var gravity_vector = Vector3()
-
+var walking = false
 
 export var mouse_sensitivity : float = 0.3
 onready var head = $Head
 onready var ground_check = $GroundCheck
+onready var basementfs = $BasementFS
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -67,3 +68,15 @@ func _physics_process(delta):
 	movement.y = gravity_vector.y
 	
 	move_and_slide(movement, Vector3.UP)
+	
+	if movement.x != 0 or movement.y !=0 or movement.z !=0:
+		walking = true
+	else:
+		walking = false
+		
+	if walking and !basementfs.playing:
+		basementfs.play()
+	if not walking and !basementfs.playing:
+		basementfs.stop()
+		
+		
