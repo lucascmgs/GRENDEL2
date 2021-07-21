@@ -8,8 +8,26 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node",
+"class": "AsepriteImportData",
+"language": "GDScript",
+"path": "res://addons/aseprite_importer/classes/AsepriteImportData.gd"
+}, {
+"base": "Node",
+"class": "AsepriteImporter",
+"language": "GDScript",
+"path": "res://addons/aseprite_importer/classes/AsepriteImporter.gd"
+}, {
+"base": "Node",
+"class": "EditorTheme",
+"language": "GDScript",
+"path": "res://addons/aseprite_importer/classes/EditorTheme.gd"
+} ]
 _global_script_class_icons={
+"AsepriteImportData": "",
+"AsepriteImporter": "",
+"EditorTheme": ""
 }
 
 [application]
@@ -17,6 +35,10 @@ _global_script_class_icons={
 config/name="Grendel 2"
 run/main_scene="res://Scenes/TestLevel20.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+TextBox="*res://Scenes/Functionality/TextBox.tscn"
 
 [display]
 
@@ -27,6 +49,10 @@ window/per_pixel_transparency/allowed=true
 window/per_pixel_transparency/enabled=true
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/aseprite_importer/plugin.cfg" )
 
 [importer_defaults]
 
